@@ -15,5 +15,5 @@ bot.on("message", (msg) => {
         cfg.chatId,
         `${chat.first_name} ${chat.last_name} (${chat.id}): ${text}`
       )
-    : bot.sendMessage(cfg.chatId, `${chat.first_name} (${chat.id}): ${text}`);
-});
+    : bot.sendMessage(cfg.chatId, `${chat.first_name} (${chat.id}): ${text}`)
+})
