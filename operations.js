@@ -1,6 +1,11 @@
 const cfg = require("./config");
 
-const url = `https://api.vk.com/method/photos.getAll?access_token=${cfg.tokenVk}&v=${cfg.apiVersion}&owner_id=${cfg.idUser}&count=${cfg.countVk}$no_service_albums=${cfg.noServiceAlbum}`;
+const url = `https://api.vk.com/method/photos.getAll
+  ?access_token=${cfg.tokenVk}
+  &v=${cfg.apiVersion}
+  &owner_id=${cfg.idUser}
+  &count=${cfg.countVk}
+  &no_service_albums=${cfg.noServiceAlbum}`;
 
 const getData = async (url) => {
   const res = await fetch(url, {
