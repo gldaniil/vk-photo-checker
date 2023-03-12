@@ -7,8 +7,8 @@ const bot = new telegramApi(cfg.tokenTlg, { polling: true });
 
 const startBot = async () => {
   try {
+    await sequelize.sync();
     await sequelize.authenticate();
-    sequelize.sync();
     console.log('Connection has been established successfully.');
   } catch (e) {
     console.error('Unable to connect to the database:', e);
