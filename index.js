@@ -1,6 +1,6 @@
 const cfg = require('./config');
 const sequelize = require('./db');
-const userModel = require('./models');
+const { User } = require('./models');
 const options = require('./operations');
 const telegramApi = require('node-telegram-bot-api');
 const bot = new telegramApi(cfg.tokenTlg, { polling: true });
@@ -38,7 +38,7 @@ const startBot = async () => {
       idForAdd.forEach(async (userId) => {
         if (Number(userId)) {
           try {
-            await userModel.create({userId});
+            await User.create({userId});
             return bot.sendMessage(id, `Пользователь ${userId} был успешно добавлен в таблицу.`);
           } catch {
             return bot.sendMessage(id, `Пользователь ${userId} уже есть в таблице.`);
@@ -58,7 +58,7 @@ const startBot = async () => {
       idForDel.forEach(async (userId) => {
         if (Number(userId)) {
           try {
-            await userModel.destroy({
+            await User.destroy({
               where: {
                 userId: `${userId}`,
               },
@@ -81,7 +81,7 @@ const startBot = async () => {
 
     if (id == cfg.myId) {
       try {
-        let idFromBase = await userModel.findAll();
+        let idFromBase = await User.findAll();
         await bot.sendMessage(id, 'В таблице имеются следующие id:')
         Object.values(idFromBase).forEach(async value => {
           await bot.sendMessage(id, `${value.dataValues.userId}`)
