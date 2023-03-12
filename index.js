@@ -9,9 +9,9 @@ const startBot = async () => {
   try {
     await sequelize.sync();
     await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
+    console.log('Соединение успешно установлено.');
   } catch (e) {
-    console.error('Unable to connect to the database:', e);
+    console.error('Не удалось подключиться к базе данных:', e);
   }
 
   const userCheck = (msg) => {
