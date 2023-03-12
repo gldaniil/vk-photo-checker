@@ -1,7 +1,8 @@
 const cfg = require('./config');
-const telegramApi = require('node-telegram-bot-api');
 const sequelize = require('./db');
 const userModel = require('./models');
+const options = require('./operations');
+const telegramApi = require('node-telegram-bot-api');
 const bot = new telegramApi(cfg.tokenTlg, { polling: true });
 
 const startBot = async () => {
