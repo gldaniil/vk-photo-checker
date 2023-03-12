@@ -1,5 +1,5 @@
-const cfg = require("./config");
-const telegramApi = require("node-telegram-bot-api");
+const cfg = require('./config');
+const telegramApi = require('node-telegram-bot-api');
 const sequelize = require('./db');
 const userModel = require('./models');
 const bot = new telegramApi(cfg.tokenTlg, { polling: true });
@@ -14,11 +14,14 @@ const startBot = async () => {
   }
 
   bot.setMyCommands([
-    { command: "/start", description: "Начало работы" },
-    { command: "/add", description: "Добавить пользователя в таблицу" },
-    { command: "/delete", description: "Убрать пользователя из таблицу" },
-    { command: "/info", description: "Получить текущий список пользователей" },
+    { command: '/start', description: 'Начало работы' },
+    { command: '/add', description: 'Добавить пользователя в таблицу' },
+    { command: '/delete', description: 'Убрать пользователя из таблицу' },
+    { command: '/info', description: 'Получить текущий список пользователей '},
   ]);
+  bot.on("message", async (msg) => {
+
+  })
   // Если выбрана команда /add [параметры]
   bot.onText(/\/add (.+)/, async (msg, [, match]) => {
     const { id } = msg.chat;
@@ -59,35 +62,19 @@ const startBot = async () => {
       }
     });
   });
-
-  // bot.on("message", async (msg) => {
-  //   const chat = msg.chat;
-  //   const text = msg.text;
-
-  //   if (chat.id == cfg.myId) {
-
-  //     if (text === "/start") {
-  //       await bot.sendMessage(chat.id, `${text}`);
-  //     }
-  //     if (text === "/add") {
-  //       await bot.sendMessage(chat.id, "Отправь id-пользователя")
-  //       await bot.sendMessage(chat.id, `Пользователь добавлен`);
-  //     }
-  //     return bot.sendMessage(chat.id, "Я понимаю только команды из Меню 🥺")
-
-  //   } else if (chat.last_name != undefined) {
-  //     await bot.sendMessage(
-  //       cfg.myId,
-  //       `${chat.first_name} ${chat.last_name} (${chat.id}): ${text}`
-  //     );
-
-  //   } else {
-  //     await bot.sendMessage(
-  //       cfg.myId,
-  //       `${chat.first_name} (${chat.id}): ${text}`
-  //     );
-  //   }
-  // });
+  // Если выбрана команда /info 
+  bot.onText(/\/info/, async (msg) => {
+    const { id } = msg.chat;
+    try {
+      let idFromBase = await userModel.findAll();
+      await bot.sendMessage(id, 'В таблице имеются следующие id:')
+      Object.values(idFromBase).forEach(async value => {
+        await bot.sendMessage(id, `${value.dataValues.userId}`)
+      })
+    } catch (e) {
+      return bot.sendMessage(id, 'Возникла ошибка при работе над таблицей.')
+    }
+  })
 };
 
 startBot();
